@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}
+{% block admin_content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="stat-num">{{ total_candidates }}</div><div class="stat-label">Registered Candidates</div></div>
+  <div class="stat-box"><div class="stat-num">{{ total_votes }}</div><div class="stat-label">Total Votes Cast</div></div>
+  <div class="stat-box"><div class="stat-num">{{ total_voters }}</div><div class="stat-label">Students Who Voted</div></div>
+</div>
+
+<div class="panel">
+  <h3>Live Results by Docket</h3>
+  <p class="sub">Updates as votes are cast. The leading candidate in each docket is marked.</p>
+  {% if results_by_docket|length == 0 %}
+    <p class="hint">No candidates registered yet.</p>
+  {% endif %}
+  {% for block in results_by_docket %}
+  <div class="result-docket">
+    <h4>{{ block.docket }}</h4>
+    {% for row in block.rows %}
+    <div class="result-row">
+      <div class="rr-top">
+        <span class="rr-name {{ 'leader' if row.is_leader else '' }}">{{ row.candidate['name'] }}</span>
+        <span class="rr-pct">{{ row.candidate['votes'] }} votes &middot; {{ row.pct }}%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill {{ 'leader' if row.is_leader else '' }}" style="width:{{ row.pct }}%"></div></div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

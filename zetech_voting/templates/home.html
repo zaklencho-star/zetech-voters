@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home-hero">
+  <p class="kicker">General Elections &middot; Academic Year 2025/2026</p>
+  <h2>Cast your vote. Shape your campus.</h2>
+  <p>Every registered Zetech student gets one secure ballot across nine student government dockets. Verify your admission number to begin, or manage the election as a returning officer.</p>
+</div>
+<div class="choice-grid">
+  <a class="choice-card" href="{{ url_for('voter_login') }}">
+    <div class="num">01 / STUDENT</div>
+    <h3>Vote in the Election</h3>
+    <p>Verify your admission number to receive your official ballot for all nine dockets.</p>
+    <div class="go">Enter portal &rarr;</div>
+  </a>
+  <a class="choice-card" href="{{ url_for('admin_login') }}">
+    <div class="num">02 / RETURNING OFFICER</div>
+    <h3>Manage the Election</h3>
+    <p>Add candidates with photos and courses, monitor turnout, and view live results.</p>
+    <div class="go">Admin sign in &rarr;</div>
+  </a>
+</div>
+{% endblock %}
