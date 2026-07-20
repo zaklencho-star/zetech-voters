@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block topbar_right %}<a href="{{ url_for('home') }}">Exit</a>{% endblock %}
+{% block content %}
+<div class="ballot-wrap">
+  <div class="stepper">
+    {% for d in dockets %}
+      <div class="step-dot {{ 'done' if loop.index0 < current_index else ('current' if loop.index0 == current_index else '') }}" title="{{ d }}"></div>
+    {% endfor %}
+  </div>
+
+  <div class="docket-head">
+    <p class="eyebrow">Docket {{ step_number }} of {{ step_total }}</p>
+    <h2>{{ docket }}</h2>
+    <p>Select one candidate, then continue to the next docket.</p>
+  </div>
+
+  <form method="POST" action="{{ url_for('select_candidate') }}">
+    {% if candidates|length == 0 %}
+      <div class="empty-docket">No candidates have been registered for this docket yet.</div>
+    {% else %}
+      <div class="candidate-grid">
+        {% for candidate in candidates %}
+        <div class="candidate-card {{ 'selected' if selected_id and selected_id|string == candidate['id']|string else '' }}">
+          <label>
+            <input type="radio" name="candidate_id" value="{{ candidate['id'] }}"
+              {% if selected_id and selected_id|string == candidate['id']|string %}checked{% endif %}
+              onchange="document.querySelectorAll('.candidate-card').forEach(function(c){c.classList.remove('selected');}); this.closest('.candidate-card').classList.add('selected');">
+            {% if candidate['photo_filename'] %}
+              <img class="cand-photo" src="{{ url_for('static', filename='uploads/' ~ candidate['photo_filename']) }}">
+            {% else %}
+              <div class="cand-photo placeholder">{{ candidate['name'][:2]|upper }}</div>
+            {% endif %}
+            <p class="cand-name">{{ candidate['name'] }}</p>
+            <span class="cand-course">{{ candidate['course_code'] }}</span>
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="ballot-nav">
+      {% if current_index > 0 %}
+        <button class="btn btn-ghost" type="submit" name="direction" value="back" formnovalidate>&larr; Previous</button>
+      {% endif %}
+      <button class="btn btn-primary" type="submit" name="direction" value="next">
+        {{ 'Review Ballot' if is_last else 'Next Docket' }} &rarr;
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block topbar_right %}<a href="{{ url_for('admin_logout') }}">Exit Admin</a>{% endblock %}
+{% block content %}
+<div class="admin-shell">
+  <div class="admin-tabs">
+    <a class="admin-tab {{ 'active' if active_tab == 'candidates' else '' }}" href="{{ url_for('admin_candidates') }}">Candidates</a>
+    <a class="admin-tab {{ 'active' if active_tab == 'results' else '' }}" href="{{ url_for('admin_results') }}">Live Results</a>
+    <a class="admin-tab {{ 'active' if active_tab == 'settings' else '' }}" href="{{ url_for('admin_settings') }}">Settings</a>
+  </div>
+  {% block admin_content %}{% endblock %}
+</div>
+{% endblock %}

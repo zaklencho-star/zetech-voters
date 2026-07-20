@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import '_macros.html' as m %}
+{% block bodyclass %}login-page{% endblock %}
+{% block topbar_right %}<span>Student Elections 2025/2026</span>{% endblock %}
+{% block content %}
+<div class="home-hero">
+  <p class="kicker">General Elections &middot; Academic Year 2025/2026</p>
+  <h2>Cast your vote. Shape your campus.</h2>
+  <p>One portal, one login. Students verify with their admission number; the returning officer signs in with the admin passcode &mdash; same box, same page.</p>
+</div>
+
+<div class="official-card on-photo">
+  <div class="card-seal-strip">
+    {{ m.crest(52, True) }}
+    <p class="eyebrow">Official Portal Sign-In</p>
+    <h2>Enter Your Credential</h2>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('home') }}">
+      <div class="field">
+        <label for="credential">Admission Number or Admin Passcode</label>
+        <input type="text" id="credential" name="credential" autocomplete="off" autofocus
+               class="{{ 'error' if error else '' }}"
+               placeholder="e.g. BIRD/0124/25"
+               value="{{ credential_input }}">
+        {% if error %}
+          <p class="error-msg">{{ error }}</p>
+        {% else %}
+          <p class="hint">
+            <strong>Students:</strong> enter your admission number &mdash; format COURSE CODE / SERIAL / YEAR, e.g. BIRD/0124/25.<br>
+            <strong>Returning officer:</strong> enter the admin passcode instead of an admission number.
+          </p>
+        {% endif %}
+      </div>
+      <button class="btn btn-primary" type="submit">Enter Portal</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

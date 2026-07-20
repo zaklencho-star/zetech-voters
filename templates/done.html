@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import '_macros.html' as m %}
+{% block content %}
+<div class="success-wrap">
+  <div class="seal-stamp">{{ m.stamp() }}</div>
+  <h2>Vote Officially Cast</h2>
+  <p>Thank you, {{ receipt.admission }}. Your ballot has been recorded and cannot be modified or resubmitted.</p>
+  <div class="receipt">
+    ADMISSION: {{ receipt.admission }}<br>
+    DOCKETS VOTED: {{ receipt.dockets_voted }}<br>
+    TIMESTAMP: {{ now }}
+  </div>
+  <div style="margin-top:26px;">
+    <a class="btn btn-ghost" href="{{ url_for('home') }}" style="width:auto;padding:12px 24px;text-decoration:none;">Return to Home</a>
+  </div>
+</div>
+{% endblock %}

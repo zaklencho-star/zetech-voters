@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import '_macros.html' as m %}
+{% block content %}
+<a class="back-link" href="{{ url_for('home') }}">&larr; Back</a>
+<div class="official-card">
+  <div class="card-seal-strip">
+    {{ m.crest(52, True) }}
+    <p class="eyebrow">Returning Officer</p>
+    <h2>Admin Sign In</h2>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('admin_login') }}">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="off" value="{{ default_username }}">
+      </div>
+      <div class="field">
+        <label for="password">Passcode</label>
+        <input type="password" id="password" name="password" autocomplete="off" class="{{ 'error' if error else '' }}">
+        {% if error %}
+          <p class="error-msg">{{ error }}</p>
+        {% else %}
+          <p class="hint">Default demo passcode: ZetechVotes2026 &mdash; change it from Settings after your first sign-in.</p>
+        {% endif %}
+      </div>
+      <button class="btn btn-primary" type="submit">Sign In</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

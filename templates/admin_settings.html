@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %}
+{% block admin_content %}
+<div class="panel">
+  <h3>Recognised Course Codes</h3>
+  <p class="sub">Admission numbers are validated automatically against these {{ courses|length }} programme codes, in the format CODE/NNNN/YY.</p>
+  <table>
+    <thead><tr><th>Code</th><th>Programme</th><th>School</th></tr></thead>
+    <tbody>
+      {% for c in courses %}
+      <tr><td><span class="tag">{{ c.code }}</span></td><td>{{ c.name }}</td><td>{{ c.school }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="panel">
+  <h3>Change Admin Passcode</h3>
+  <p class="sub">Update the returning officer sign-in passcode.</p>
+  <form method="POST" action="{{ url_for('admin_change_password') }}">
+    <div class="form-grid">
+      <div class="field"><label for="current_password">Current Passcode</label><input type="password" id="current_password" name="current_password"></div>
+      <div class="field"></div>
+      <div class="field"><label for="new_password">New Passcode</label><input type="password" id="new_password" name="new_password"></div>
+      <div class="field"><label for="confirm_password">Confirm New Passcode</label><input type="password" id="confirm_password" name="confirm_password"></div>
+    </div>
+    <button class="btn btn-primary btn-auto" type="submit">Update Passcode</button>
+  </form>
+</div>
+
+<div class="danger-zone">
+  <h4>Danger Zone</h4>
+  <p>This permanently clears all candidates, votes, and voting records for everyone. Type the phrase below exactly to confirm.</p>
+  <form method="POST" action="{{ url_for('admin_reset') }}" onsubmit="return confirm('This cannot be undone. Continue?');">
+    <div class="field">
+      <label for="confirm_phrase">Type RESET ELECTION to confirm</label>
+      <input type="text" id="confirm_phrase" name="confirm_phrase" placeholder="RESET ELECTION">
+    </div>
+    <button class="btn btn-danger btn-sm" type="submit">Reset Entire Election</button>
+  </form>
+</div>
+{% endblock %}

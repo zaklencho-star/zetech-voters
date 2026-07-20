@@ -1,0 +1,28 @@
+{% macro crest(size=42, mono=True) %}
+<svg viewBox="0 0 64 64" width="{{ size }}" height="{{ size }}" xmlns="http://www.w3.org/2000/svg" class="crest">
+  <path d="M32 4 L58 14 V32 C58 46 47 56 32 61 C17 56 6 46 6 32 V14 Z"
+        fill="{{ 'rgba(247,244,236,0.08)' if mono else 'var(--navy)' }}"
+        stroke="{{ 'var(--gold-light)' if mono else 'var(--gold)' }}" stroke-width="2"/>
+  <path d="M20 20 H44 L22 44 H44" fill="none"
+        stroke="{{ 'var(--gold-light)' if mono else 'var(--gold)' }}"
+        stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>
+{% endmacro %}
+
+{% macro guilloche() %}
+<div class="guilloche">
+  <svg preserveAspectRatio="none" viewBox="0 0 800 400" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.05;">
+    {% for i in range(10) %}
+    <circle cx="{{ i * 90 }}" cy="{{ 60 if i % 2 == 0 else 140 }}" r="70" fill="none" stroke="#0F1B33" stroke-width="1"/>
+    {% endfor %}
+  </svg>
+</div>
+{% endmacro %}
+
+{% macro stamp() %}
+<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="70" cy="70" r="66" fill="none" stroke="var(--success)" stroke-width="3"/>
+  <circle cx="70" cy="70" r="56" fill="none" stroke="var(--success)" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <path d="M46 72 L63 89 L96 50" fill="none" stroke="var(--success)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+{% endmacro %}

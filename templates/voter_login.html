@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import '_macros.html' as m %}
+{% block content %}
+<a class="back-link" href="{{ url_for('home') }}">&larr; Back</a>
+<div class="official-card">
+  <div class="card-seal-strip">
+    {{ m.crest(52, True) }}
+    <p class="eyebrow">Voter Verification</p>
+    <h2>Enter Your Admission Number</h2>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('voter_login') }}">
+      <div class="field">
+        <label for="admission">Admission Number</label>
+        <input type="text" id="admission" name="admission" autocomplete="off" autofocus
+               class="{{ 'error' if error else '' }}"
+               placeholder="e.g. BIRD/0124/25"
+               value="{{ admission_input }}">
+        {% if error %}
+          <p class="error-msg">{{ error }}</p>
+        {% else %}
+          <p class="hint">Format: COURSE CODE / SERIAL / YEAR OF ADMISSION &mdash; e.g. BIRD/0124/25 for a 2025 International Relations &amp; Diplomacy admit.</p>
+        {% endif %}
+      </div>
+      <button class="btn btn-primary" type="submit">Verify &amp; Enter Ballot</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

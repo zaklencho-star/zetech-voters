@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block topbar_right %}<a href="{{ url_for('home') }}">Exit</a>{% endblock %}
+{% block content %}
+<div class="ballot-wrap" style="max-width:560px;">
+  <div class="docket-head">
+    <p class="eyebrow">Final Step</p>
+    <h2>Review Your Ballot</h2>
+    <p>Confirm your selections below. Once cast, votes cannot be changed.</p>
+  </div>
+
+  <div class="review-list">
+    {% if rows|length == 0 %}
+      <p class="hint">No selections were made.</p>
+    {% endif %}
+    {% for row in rows %}
+    <div class="review-row">
+      {% if row.candidate['photo_filename'] %}
+        <img class="r-photo" src="{{ url_for('static', filename='uploads/' ~ row.candidate['photo_filename']) }}">
+      {% else %}
+        <div class="r-photo cand-photo placeholder" style="width:44px;height:44px;font-size:14px;">{{ row.candidate['name'][:2]|upper }}</div>
+      {% endif %}
+      <div>
+        <p class="r-docket">{{ row.docket }}</p>
+        <p class="r-name">{{ row.candidate['name'] }}</p>
+      </div>
+      <span class="r-course">{{ row.candidate['course_code'] }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="ballot-nav">
+    <a class="btn btn-ghost" href="{{ url_for('edit_ballot') }}" style="text-decoration:none;">&larr; Edit Ballot</a>
+    <form method="POST" action="{{ url_for('cast_vote') }}">
+      <button class="btn btn-gold" type="submit">Cast My Vote</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

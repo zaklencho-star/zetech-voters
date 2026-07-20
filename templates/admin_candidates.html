@@ -1,0 +1,88 @@
+{% extends "admin_base.html" %}
+{% block admin_content %}
+<div class="panel">
+  <h3>Add Candidate</h3>
+  <p class="sub">Upload a photo, set their docket and course. They will instantly appear on the voter ballot.</p>
+  <form method="POST" action="{{ url_for('admin_candidates') }}" enctype="multipart/form-data">
+    <div class="form-grid">
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Wanjiru Kamau">
+      </div>
+      <div class="field">
+        <label for="docket">Docket</label>
+        <select id="docket" name="docket">
+          {% for d in dockets %}<option value="{{ d }}">{{ d }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field" style="grid-column:1/-1;">
+        <label for="course_code">Course</label>
+        <select id="course_code" name="course_code">
+          {% for c in courses %}<option value="{{ c.code }}">{{ c.code }} &mdash; {{ c.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field" style="grid-column:1/-1;">
+        <label for="photo">Candidate Photo</label>
+        <label class="photo-upload" id="photo-upload-label">
+          <div class="preview" id="photo-preview">IMG</div>
+          <span class="up-label">Click to choose an image (auto-resized to a square)</span>
+          <input type="file" id="photo" name="photo" accept="image/*" style="display:none;">
+        </label>
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <button class="btn btn-primary btn-auto" type="submit">Add Candidate to Ballot</button>
+    </div>
+  </form>
+</div>
+
+<div class="panel">
+  <h3>Registered Candidates ({{ candidates|length }})</h3>
+  <p class="sub">Manage everyone currently on the ballot.</p>
+  {% if candidates|length == 0 %}
+    <p class="hint">No candidates yet &mdash; add the first one above.</p>
+  {% else %}
+    <table>
+      <thead>
+        <tr><th></th><th>Name</th><th>Docket</th><th>Course</th><th>Votes</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for c in candidates %}
+        <tr>
+          <td>
+            {% if c['photo_filename'] %}
+              <img class="table-photo" src="{{ url_for('static', filename='uploads/' ~ c['photo_filename']) }}">
+            {% else %}
+              <div class="table-photo cand-photo placeholder" style="width:36px;height:36px;font-size:11px;">{{ c['name'][:2]|upper }}</div>
+            {% endif %}
+          </td>
+          <td><strong>{{ c['name'] }}</strong></td>
+          <td><span class="tag">{{ c['docket'] }}</span></td>
+          <td><span class="tag">{{ c['course_code'] }}</span></td>
+          <td>{{ c['votes'] }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin_delete_candidate', candidate_id=c['id']) }}"
+                  onsubmit="return confirm('Remove {{ c['name']|e }} from the ballot?');">
+              <button class="icon-btn" type="submit">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</div>
+
+<script>
+  document.getElementById('photo').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var preview = document.getElementById('photo-preview');
+      preview.innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+{% endblock %}
