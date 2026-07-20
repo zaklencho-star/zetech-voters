@@ -1,0 +1,14 @@
+# Render Blueprint — Zetech Voting Portal
+# Connect this to GitHub in Render dashboard for auto-deploy
+
+services:
+  - type: web
+    name: zetech-voting
+    env: python
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /
+    envVars:
+      - key: ZETECH_SECRET_KEY
+        generateValue: true
